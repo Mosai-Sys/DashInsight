@@ -15,3 +15,7 @@ Ensure the GraphQL gateway and pdf-service are running so the `generateReport` m
 The main dashboard fetches data from the GraphQL API and shows KPIs and recommended charts. Below is a placeholder for a future screenshot.
 
 ![Dashboard screenshot](docs/dashboard-screenshot.png)
+
+## Multi-tenant dashboard
+
+Use the school selector in the header to switch between different schools. The selector fetches schools with the `allSchools` query and loads the selected school's data with `school(id)`.
