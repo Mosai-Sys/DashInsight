@@ -50,45 +50,47 @@ export default function App() {
   const charts: ChartConfig[] = data?.school?.datasets?.recommendedCharts ?? [];
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h4" gutterBottom>
-          {schoolName ? `${schoolName} Dashboard` : 'Dashboard'}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <MuiLink component={Link} to="/compare" underline="hover">
-            Compare schools
-          </MuiLink>
-          <SchoolSelector />
+    <>
+      <Container sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h4" gutterBottom>
+            {schoolName ? `${schoolName} Dashboard` : 'Dashboard'}
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <MuiLink component={Link} to="/compare" underline="hover">
+              Compare schools
+            </MuiLink>
+            <SchoolSelector />
+          </Box>
         </Box>
-      </Box>
-      {!selectedSchoolId && <Typography>Select a school to view data.</Typography>}
-      {selectedSchoolId && loading && (
-        <CircularProgress />
-      )}
-      {error && (
-        <Typography color="error">Error loading data</Typography>
-      )}
-      {data?.school && !loading && (
-        <>
-          <KPIGrid kpis={kpis} />
-          <ChartPanel charts={charts} />
-          <Button variant="contained" sx={{ mt: 4 }} onClick={() => setShowAI(!showAI)}>
-            {showAI ? 'Close AI Analysis' : 'Open AI Analysis'}
-          </Button>
-          {showAI && <AiAnalysisEngine />}
-        </>
-      )}
-    </Container>
-    <Snackbar
-      open={loadedMsg}
-      autoHideDuration={3000}
-      onClose={() => setLoadedMsg(false)}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-    >
-      <Alert severity="success" sx={{ width: '100%' }}>
-        {schoolName ? `Loaded ${schoolName}` : 'Data loaded'}
-      </Alert>
-    </Snackbar>
+        {!selectedSchoolId && <Typography>Select a school to view data.</Typography>}
+        {selectedSchoolId && loading && (
+          <CircularProgress />
+        )}
+        {error && (
+          <Typography color="error">Error loading data</Typography>
+        )}
+        {data?.school && !loading && (
+          <>
+            <KPIGrid kpis={kpis} />
+            <ChartPanel charts={charts} />
+            <Button variant="contained" sx={{ mt: 4 }} onClick={() => setShowAI(!showAI)}>
+              {showAI ? 'Close AI Analysis' : 'Open AI Analysis'}
+            </Button>
+            {showAI && <AiAnalysisEngine />}
+          </>
+        )}
+      </Container>
+      <Snackbar
+        open={loadedMsg}
+        autoHideDuration={3000}
+        onClose={() => setLoadedMsg(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          {schoolName ? `Loaded ${schoolName}` : 'Data loaded'}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
