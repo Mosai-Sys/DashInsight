@@ -5,6 +5,9 @@ import App from './App';
 import CompareView from './views/CompareView';
 import client from './apollo/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({ immediate: true });
 
 const rootEl = document.getElementById('root');
 if (rootEl) {

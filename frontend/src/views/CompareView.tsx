@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Container, Typography, CircularProgress, Box, Link as MuiLink } from '@mui/material';
+import {
+  Container,
+  Typography,
+  CircularProgress,
+  Box,
+  Link as MuiLink,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import MultiSchoolSelector from '../components/MultiSchoolSelector';
 import KPIComparisonTable from '../components/KPIComparisonTable';
 import { KPISchool } from '../components/KPIComparisonTable';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const COMPARE_SCHOOLS = gql`
   query CompareSchools($ids: [ID!]!) {
@@ -21,7 +30,14 @@ const COMPARE_SCHOOLS = gql`
 `;
 
 export default function CompareView() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useLocalStorage<string[]>('compareSchools', []);
+  const [restored, setRestored] = useState(false);
+
+  useEffect(() => {
+    if (selectedIds.length > 0) {
+      setRestored(true);
+    }
+  }, []);
 
   const { data, loading, error } = useQuery(COMPARE_SCHOOLS, {
     variables: { ids: selectedIds },
@@ -51,6 +67,16 @@ export default function CompareView() {
       {schools.length > 0 && !loading && (
         <KPIComparisonTable schools={schools} />
       )}
+      <Snackbar
+        open={restored}
+        autoHideDuration={3000}
+        onClose={() => setRestored(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="info" sx={{ width: '100%' }}>
+          Restored compare selection
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
