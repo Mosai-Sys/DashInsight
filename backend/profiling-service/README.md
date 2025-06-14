@@ -1,3 +1,23 @@
 # Profiling Service
 
-This folder contains the profiling-service microservice.
+This FastAPI microservice exposes a single endpoint for uploading Excel files.
+It returns the column names, number of rows, and descriptive statistics for the
+uploaded dataset.
+
+## Endpoint
+
+`POST /upload`
+
+Body: multipart form with a field named `file` containing an Excel file.
+
+Response example:
+```json
+{
+  "filename": "example.xlsx",
+  "metadata": {
+    "columns": ["A", "B"],
+    "rows": 100,
+    "summary": { ... }
+  }
+}
+```
