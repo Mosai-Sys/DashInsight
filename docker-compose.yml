@@ -1,40 +1,47 @@
-version: '3.8'
-
+---
+version: "3.8"
 services:
   auth-service:
-    build: ./backend/auth-service
+    build:
+      context: ./backend/auth-service
     ports:
       - "8001:8000"
     environment:
-      - JWT_SECRET=supersecretkey
+      JWT_SECRET: supersecretkey
 
   profiling-service:
-    build: ./backend/profiling-service
+    build:
+      context: ./backend/profiling-service
     ports:
       - "8002:8000"
 
   vismagi-service:
-    build: ./backend/vismagi-service
+    build:
+      context: ./backend/vismagi-service
     ports:
       - "8003:8000"
 
   optimization-service:
-    build: ./backend/optimization-service
+    build:
+      context: ./backend/optimization-service
     ports:
       - "8004:8000"
 
   simulation-service:
-    build: ./backend/simulation-service
+    build:
+      context: ./backend/simulation-service
     ports:
       - "8005:8000"
 
   pdf-service:
-    build: ./backend/pdf-service
+    build:
+      context: ./backend/pdf-service
     ports:
       - "8006:8000"
 
   gateway:
-    build: ./backend/gateway
+    build:
+      context: ./backend/gateway
     ports:
       - "8000:8000"
     depends_on:
