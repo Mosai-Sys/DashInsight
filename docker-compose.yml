@@ -1,3 +1,55 @@
-version: '3'
+# Define the docker-compose.yml file content
+docker_compose_path = Path("/mnt/data/kommunalt-dashboard/docker-compose.yml")
+
+docker_compose_content = """
+version: '3.8'
+
 services:
-  # services defined here...
+  auth-service:
+    build: ./backend/auth-service
+    ports:
+      - "8001:8000"
+    environment:
+      - JWT_SECRET=supersecretkey
+
+  profiling-service:
+    build: ./backend/profiling-service
+    ports:
+      - "8002:8000"
+
+  vismagi-service:
+    build: ./backend/vismagi-service
+    ports:
+      - "8003:8000"
+
+  optimization-service:
+    build: ./backend/optimization-service
+    ports:
+      - "8004:8000"
+
+  simulation-service:
+    build: ./backend/simulation-service
+    ports:
+      - "8005:8000"
+
+  pdf-service:
+    build: ./backend/pdf-service
+    ports:
+      - "8006:8000"
+
+  gateway:
+    build: ./backend/gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - auth-service
+      - profiling-service
+      - vismagi-service
+      - optimization-service
+      - simulation-service
+      - pdf-service
+"""
+
+# Write the docker-compose.yml file
+docker_compose_path.write_text(docker_compose_content.strip(), encoding="utf-8")
+docker_compose_path.name
