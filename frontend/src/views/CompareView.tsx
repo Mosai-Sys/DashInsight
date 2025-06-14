@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Container,
@@ -32,12 +32,17 @@ const COMPARE_SCHOOLS = gql`
 export default function CompareView() {
   const [selectedIds, setSelectedIds] = useLocalStorage<string[]>('compareSchools', []);
   const [restored, setRestored] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const initial = useRef(true);
 
   useEffect(() => {
-    if (selectedIds.length > 0) {
-      setRestored(true);
+    if (initial.current) {
+      initial.current = false;
+      if (selectedIds.length > 0) setRestored(true);
+    } else {
+      setSaved(true);
     }
-  }, []);
+  }, [selectedIds]);
 
   const { data, loading, error } = useQuery(COMPARE_SCHOOLS, {
     variables: { ids: selectedIds },
@@ -75,6 +80,16 @@ export default function CompareView() {
       >
         <Alert severity="info" sx={{ width: '100%' }}>
           Restored compare selection
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={saved}
+        autoHideDuration={3000}
+        onClose={() => setSaved(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Saved compare selection
         </Alert>
       </Snackbar>
     </Container>

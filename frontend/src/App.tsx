@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Container, Typography, Button, CircularProgress, Box, Link as MuiLink } from '@mui/material';
+import { Container, Typography, Button, CircularProgress, Box, Link as MuiLink, Snackbar, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import KPIGrid, { KPI } from './components/KPIGrid';
 import ChartPanel, { ChartConfig } from './components/ChartPanel';
@@ -37,6 +37,13 @@ export default function App() {
     skip: !selectedSchoolId,
   });
   const [showAI, setShowAI] = useState(false);
+  const [loadedMsg, setLoadedMsg] = useState(false);
+
+  useEffect(() => {
+    if (data?.school) {
+      setLoadedMsg(true);
+    }
+  }, [data]);
 
   const schoolName: string = data?.school?.name ?? '';
   const kpis: KPI[] = data?.school?.kpis ?? [];
@@ -73,5 +80,15 @@ export default function App() {
         </>
       )}
     </Container>
+    <Snackbar
+      open={loadedMsg}
+      autoHideDuration={3000}
+      onClose={() => setLoadedMsg(false)}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <Alert severity="success" sx={{ width: '100%' }}>
+        {schoolName ? `Loaded ${schoolName}` : 'Data loaded'}
+      </Alert>
+    </Snackbar>
   );
 }
