@@ -7,6 +7,7 @@ import OrbitalDashboardUI from './OrbitalDashboardUI';
 import client from './apollo/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { registerSW } from 'virtual:pwa-register';
+import { ThemeProvider } from './hooks/useTheme';
 import './index.css';
 
 registerSW({ immediate: true });
@@ -17,13 +18,15 @@ if (rootEl) {
   root.render(
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/compare" element={<CompareView />} />
-            <Route path="/orbital" element={<OrbitalDashboardUI />} />
-          </Routes>
-        </BrowserRouter>
+        <ThemeProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/compare" element={<CompareView />} />
+              <Route path="/orbital" element={<OrbitalDashboardUI />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
       </ApolloProvider>
     </React.StrictMode>
   );
