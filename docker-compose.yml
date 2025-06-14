@@ -1,7 +1,3 @@
-# Define the docker-compose.yml file content
-docker_compose_path = Path("/mnt/data/kommunalt-dashboard/docker-compose.yml")
-
-docker_compose_content = """
 version: '3.8'
 
 services:
@@ -48,8 +44,3 @@ services:
       - optimization-service
       - simulation-service
       - pdf-service
-"""
-
-# Write the docker-compose.yml file
-docker_compose_path.write_text(docker_compose_content.strip(), encoding="utf-8")
-docker_compose_path.name
