@@ -1,0 +1,39 @@
+NOTICE
+
+This project includes open source software components and model files licensed under a variety of terms. Below is a list of major libraries and tools used, along with their respective licenses.
+
+────────────────────────────────────────────
+Frontend Components:
+────────────────────────────────────────────
+- React (MIT)
+- Zustand (MIT)
+- Apollo Client (MIT)
+- Material UI (MIT)
+- Emotion (MIT)
+- D3.js (BSD-3-Clause)
+- Highcharts (Proprietary - free for non-commercial use)
+- @xenova/transformers (Apache-2.0)
+- ONNX Runtime Web (MIT)
+
+────────────────────────────────────────────
+Backend Services:
+────────────────────────────────────────────
+- FastAPI (MIT)
+- Uvicorn / Starlette (BSD)
+- Pandas / NumPy / SciPy (BSD)
+- PuLP (MIT)
+- Express.js (MIT)
+- Playwright (Apache-2.0)
+
+────────────────────────────────────────────
+Language Models:
+────────────────────────────────────────────
+- microsoft/Phi-3-mini-4k-instruct-onnx-web
+  Licensed under: Microsoft Research License Agreement for Non-Commercial Use
+  URL: https://aka.ms/phi-license
+
+Note:
+You are responsible for complying with the license terms of any third-party library or model if redistributed or used beyond the scope of open source or non-commercial development.
+
+────────────────────────────────────────────
+This file is provided for attribution and transparency. See LICENSE for full terms.
