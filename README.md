@@ -19,3 +19,14 @@ The main dashboard fetches data from the GraphQL API and shows KPIs and recommen
 ## Multi-tenant dashboard
 
 Use the school selector in the header to switch between different schools. The selector fetches schools with the `allSchools` query and loads the selected school's data with `school(id)`.
+
+## Compare Schools
+
+Navigate to **Compare schools** in the dashboard header to select multiple schools and view their KPIs side-by-side.
+
+Example table:
+
+| KPI name | School A | School B |
+|----------|----------|----------|
+| Cost/student | 92 000 | 107 000 |
+| Trivsel | 4.3 | 3.7 |
