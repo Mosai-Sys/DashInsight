@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import App from './App';
 import CompareView from './views/CompareView';
+import OrbitalDashboardUI from './OrbitalDashboardUI';
 import client from './apollo/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { registerSW } from 'virtual:pwa-register';
+import './index.css';
 
 registerSW({ immediate: true });
 
@@ -19,6 +21,7 @@ if (rootEl) {
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/compare" element={<CompareView />} />
+            <Route path="/orbital" element={<OrbitalDashboardUI />} />
           </Routes>
         </BrowserRouter>
       </ApolloProvider>

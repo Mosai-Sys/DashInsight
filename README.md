@@ -30,3 +30,8 @@ Example table:
 |----------|----------|----------|
 | Cost/student | 92 000 | 107 000 |
 | Trivsel | 4.3 | 3.7 |
+
+## Mobile view
+
+Below is a preview of the new mobile layout.
+
