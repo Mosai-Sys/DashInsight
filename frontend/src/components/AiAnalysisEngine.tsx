@@ -1,0 +1,1 @@
+// Phi-3 AI-komponent (placeholder)

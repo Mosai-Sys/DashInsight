@@ -1,0 +1,3 @@
+# agent.md
+
+[Full arkitekturbeskrivelse...]
