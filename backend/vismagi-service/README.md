@@ -1,34 +1,39 @@
 # Vismagi Service
 
-This FastAPI microservice suggests basic chart types based on dataset metadata.
-It expects a list of column descriptions with a simple `type` indicator. The
-supported types are `numeric`, `categorical`, and `datetime`.
+This microservice recommends chart configurations based on dataset metadata. It
+expects a JSON object describing each column with a semantic `type` such as
+`numeric`, `categorical`, `temporal`, or `geo`.
 
 ## Endpoint
 
 `POST /recommend`
 
-Request body example:
+### Example request
 ```json
 {
   "columns": [
-    {"name": "Age", "type": "numeric"},
-    {"name": "Gender", "type": "categorical"},
-    {"name": "Date", "type": "datetime"}
+    {"name": "department", "type": "categorical"},
+    {"name": "score", "type": "numeric"},
+    {"name": "date", "type": "temporal"}
   ]
 }
 ```
 
-The service applies these rules to generate recommendations:
+## Recommendation Rules
+1. One temporal column and one numeric column → **line chart**
+2. One categorical column and one numeric column → **bar chart**
+3. Two numeric columns → **scatter plot**
+4. One geo column and one numeric column → **heatmap**
+5. More than two categorical columns → **treemap**
 
-1. Two or more numeric columns → include `scatter`.
-2. One numeric and one categorical column → include `bar`.
-3. One numeric and one datetime column → include `line`.
-4. If none of the above rules match → return `table`.
-
-Response example:
+### Example response
 ```json
-{
-  "charts": ["bar", "line", "scatter"]
-}
+[
+  {
+    "type": "bar",
+    "xAxis": "department",
+    "yAxis": "score",
+    "title": "score by department"
+  }
+]
 ```
