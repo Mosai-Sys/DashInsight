@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Container, Typography, Button, CircularProgress, Box } from '@mui/material';
+import { Container, Typography, Button, CircularProgress, Box, Link as MuiLink } from '@mui/material';
+import { Link } from 'react-router-dom';
 import KPIGrid, { KPI } from './components/KPIGrid';
 import ChartPanel, { ChartConfig } from './components/ChartPanel';
 import AiAnalysisEngine from './components/AiAnalysisEngine';
@@ -47,7 +48,12 @@ export default function App() {
         <Typography variant="h4" gutterBottom>
           {schoolName ? `${schoolName} Dashboard` : 'Dashboard'}
         </Typography>
-        <SchoolSelector />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <MuiLink component={Link} to="/compare" underline="hover">
+            Compare schools
+          </MuiLink>
+          <SchoolSelector />
+        </Box>
       </Box>
       {!selectedSchoolId && <Typography>Select a school to view data.</Typography>}
       {selectedSchoolId && loading && (
