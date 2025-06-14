@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { pipeline, env } from '@xenova/transformers';
 import { gql, useMutation } from '@apollo/client';
+import useIndexedDB from '../hooks/useIndexedDB';
+import { Snackbar, Alert } from '@mui/material';
 
 env.allowLocalModels = false;
 const model_id = 'Xenova/phi-3-mini-4k-instruct-onnx';
@@ -18,6 +20,8 @@ export default function AiAnalysisEngine() {
   const [output, setOutput] = useState('');
   const [generator, setGenerator] = useState<any>(null);
   const [exportStatus, setExportStatus] = useState<ExportStatus>('idle');
+  const [savedOutput, saveOutput] = useIndexedDB('last-report');
+  const [restored, setRestored] = useState(false);
   const [inputPrompt, setInputPrompt] = useState(
     'You are an education advisor. Based on the following school data, write a short report in Norwegian:\n' +
       '- Absence rate: 12.4%\n- Budget deviation: -400,000 NOK\n- Student satisfaction score: 3.5\n\n' +
@@ -36,11 +40,19 @@ export default function AiAnalysisEngine() {
     loadModel();
   }, []);
 
+  useEffect(() => {
+    if (savedOutput) {
+      setOutput(savedOutput);
+      setRestored(true);
+    }
+  }, [savedOutput]);
+
   const handleGenerate = async () => {
     if (!generator) return;
     setLoading(true);
     const result = await generator(inputPrompt, { max_new_tokens: 256 });
     setOutput(result[0].generated_text);
+    saveOutput(result[0].generated_text);
     setLoading(false);
     setExportStatus('idle');
   };
@@ -70,35 +82,47 @@ export default function AiAnalysisEngine() {
   };
 
   return (
-    <div
-      style={{
-        backdropFilter: 'blur(10px)',
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        padding: '2rem',
-        borderRadius: '1rem',
-      }}
-    >
-      <h2>AI-Generated Report</h2>
-      <textarea
-        style={{ width: '100%', height: '120px', padding: '1rem', marginBottom: '1rem' }}
-        value={inputPrompt}
-        onChange={(e) => setInputPrompt(e.target.value)}
-      />
-      <button onClick={handleGenerate} disabled={loading}>
-        {loading ? 'Generating...' : 'Generate'}
-      </button>
-      <button
-        style={{ marginLeft: '1rem' }}
-        onClick={handleExport}
-        disabled={!output || exportStatus === 'exporting'}
+    <>
+      <div
+        style={{
+          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(255,255,255,0.05)',
+          padding: '2rem',
+          borderRadius: '1rem',
+        }}
       >
-        {exportStatus === 'exporting' ? 'Exporting...' : 'Export to PDF'}
-      </button>
-      {exportStatus === 'ready' && <span style={{ marginLeft: '0.5rem' }}>Download ready</span>}
-      <div style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
-        <strong>Output:</strong>
-        <p>{output}</p>
+        <h2>AI-Generated Report</h2>
+        <textarea
+          style={{ width: '100%', height: '120px', padding: '1rem', marginBottom: '1rem' }}
+          value={inputPrompt}
+          onChange={(e) => setInputPrompt(e.target.value)}
+        />
+        <button onClick={handleGenerate} disabled={loading}>
+          {loading ? 'Generating...' : 'Generate'}
+        </button>
+        <button
+          style={{ marginLeft: '1rem' }}
+          onClick={handleExport}
+          disabled={!output || exportStatus === 'exporting'}
+        >
+          {exportStatus === 'exporting' ? 'Exporting...' : 'Export to PDF'}
+        </button>
+        {exportStatus === 'ready' && <span style={{ marginLeft: '0.5rem' }}>Download ready</span>}
+        <div style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
+          <strong>Output:</strong>
+          <p>{output}</p>
+        </div>
       </div>
-    </div>
+      <Snackbar
+        open={restored}
+        autoHideDuration={3000}
+        onClose={() => setRestored(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="info" sx={{ width: '100%' }}>
+          Restored last AI report
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
