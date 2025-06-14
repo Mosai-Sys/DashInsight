@@ -2,6 +2,15 @@
 
 [Instruksjoner for utviklere og testere]
 
+## Features
+
+- Upload Excel files to generate profiling metadata
+- Automatic chart recommendations
+- AI-generated report with PDF export
+- Light/dark theme toggle
+- Mobile-friendly navigation between sections
+- Compare KPIs across schools
+
 ## Exporting AI reports
 
 1. Generate a report with the **Generate** button in the AI analysis view.
@@ -15,6 +24,10 @@ Ensure the GraphQL gateway and pdf-service are running so the `generateReport` m
 The main dashboard fetches data from the GraphQL API and shows KPIs and recommended charts. Below is a placeholder for a future screenshot.
 
 ![Dashboard screenshot](docs/dashboard-screenshot.png)
+
+Additional preview:
+
+![Desktop screenshot](assets/screenshots/desktop.png)
 
 ## Multi-tenant dashboard
 
@@ -34,4 +47,13 @@ Example table:
 ## Mobile view
 
 Below is a preview of the new mobile layout.
+
+## Running locally
+
+```bash
+docker-compose up --build
+cd frontend
+npm install
+npm run dev
+```
 
