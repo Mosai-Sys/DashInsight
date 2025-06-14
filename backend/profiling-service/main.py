@@ -1,30 +1,22 @@
-from pathlib import Path
-
-# Define base directory and file path
-profiling_service_path = Path("/mnt/data/kommunalt-dashboard/backend/profiling-service")
-profiling_service_path.mkdir(parents=True, exist_ok=True)
-main_py_path = profiling_service_path / "main.py"
-
-# Content for profiling-service main.py
-main_py_code = """
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 import pandas as pd
 import io
 
 app = FastAPI()
 
+
 @app.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
-    contents = await file.read()
-    df = pd.read_excel(io.BytesIO(contents))
+async def upload(file: UploadFile = File(...)):
+    """Receive an Excel file and return basic profiling metadata."""
+    try:
+        contents = await file.read()
+        dataframe = pd.read_excel(io.BytesIO(contents))
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid Excel file")
+
     metadata = {
-        "columns": list(df.columns),
-        "rows": len(df),
-        "summary": df.describe(include='all').to_dict()
+        "columns": dataframe.columns.tolist(),
+        "rows": len(dataframe),
+        "summary": dataframe.describe(include="all").fillna(0).to_dict(),
     }
     return {"filename": file.filename, "metadata": metadata}
-"""
-
-# Write the file
-main_py_path.write_text(main_py_code.strip(), encoding="utf-8")
-main_py_path.name
