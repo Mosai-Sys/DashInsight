@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   FormControl,
@@ -27,6 +27,8 @@ export default function SchoolSelector() {
   const setSchoolId = useTenantStore((s) => s.setSchoolId);
   const [storedId, setStoredId] = useLocalStorage<string | null>('selectedSchoolId', null);
   const [restored, setRestored] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const initial = useRef(true);
 
   useEffect(() => {
     if (!selectedSchoolId && storedId) {
@@ -37,6 +39,11 @@ export default function SchoolSelector() {
 
   useEffect(() => {
     if (selectedSchoolId) {
+      if (!initial.current) {
+        setSaved(true);
+      } else {
+        initial.current = false;
+      }
       setStoredId(selectedSchoolId);
     }
   }, [selectedSchoolId, setStoredId]);
@@ -72,6 +79,16 @@ export default function SchoolSelector() {
       >
         <Alert severity="info" sx={{ width: '100%' }}>
           Restored selected school
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={saved}
+        autoHideDuration={3000}
+        onClose={() => setSaved(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Saved selected school
         </Alert>
       </Snackbar>
     </>

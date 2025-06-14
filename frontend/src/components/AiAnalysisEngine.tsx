@@ -20,8 +20,9 @@ export default function AiAnalysisEngine() {
   const [output, setOutput] = useState('');
   const [generator, setGenerator] = useState<any>(null);
   const [exportStatus, setExportStatus] = useState<ExportStatus>('idle');
-  const [savedOutput, saveOutput] = useIndexedDB('last-report');
+  const [savedOutput, saveOutput] = useIndexedDB<{ text: string; timestamp: number }>('last-report');
   const [restored, setRestored] = useState(false);
+  const [savedMsg, setSavedMsg] = useState(false);
   const [inputPrompt, setInputPrompt] = useState(
     'You are an education advisor. Based on the following school data, write a short report in Norwegian:\n' +
       '- Absence rate: 12.4%\n- Budget deviation: -400,000 NOK\n- Student satisfaction score: 3.5\n\n' +
@@ -41,8 +42,8 @@ export default function AiAnalysisEngine() {
   }, []);
 
   useEffect(() => {
-    if (savedOutput) {
-      setOutput(savedOutput);
+    if (savedOutput && savedOutput.text) {
+      setOutput(savedOutput.text);
       setRestored(true);
     }
   }, [savedOutput]);
@@ -51,8 +52,10 @@ export default function AiAnalysisEngine() {
     if (!generator) return;
     setLoading(true);
     const result = await generator(inputPrompt, { max_new_tokens: 256 });
-    setOutput(result[0].generated_text);
-    saveOutput(result[0].generated_text);
+    const text = result[0].generated_text as string;
+    setOutput(text);
+    await saveOutput({ text, timestamp: Date.now() });
+    setSavedMsg(true);
     setLoading(false);
     setExportStatus('idle');
   };
@@ -121,6 +124,16 @@ export default function AiAnalysisEngine() {
       >
         <Alert severity="info" sx={{ width: '100%' }}>
           Restored last AI report
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={savedMsg}
+        autoHideDuration={3000}
+        onClose={() => setSavedMsg(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Saved AI report
         </Alert>
       </Snackbar>
     </>
