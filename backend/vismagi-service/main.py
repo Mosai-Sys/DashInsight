@@ -5,6 +5,11 @@ from typing import List, Optional
 app = FastAPI()
 
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
 class ColumnMeta(BaseModel):
     name: str
     type: str  # e.g. numeric, categorical, temporal, geo

@@ -5,6 +5,16 @@ import io
 app = FastAPI()
 
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
+@app.get("/profile/{item_id}")
+async def profile(item_id: str):
+    return {"profile": item_id}
+
+
 @app.post("/upload")
 async def upload(file: UploadFile = File(...)):
     """Receive an Excel file and return basic profiling metadata."""

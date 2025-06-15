@@ -1,0 +1,4 @@
+fastapi
+uvicorn[standard]
+xhtml2pdf
+pydantic
