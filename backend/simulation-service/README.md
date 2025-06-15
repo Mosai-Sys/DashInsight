@@ -43,3 +43,12 @@ violations.
   * Total staffing cost should not exceed the provided `budget`. If it does,
     the service returns a soft warning but the scenario may still be marked as
     valid if no hard constraints are broken.
+
+## Environment variables
+
+Copy `.env.example` to `.env` and adjust `PORT` as required.
+Start the service with:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT --env-file .env
+```

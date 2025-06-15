@@ -1,4 +1,4 @@
-fastapi
-uvicorn[standard]
-pandas
-openpyxl
+fastapi==0.110.*
+uvicorn[standard]==0.29.*
+pandas==2.2.*
+openpyxl==3.1.*

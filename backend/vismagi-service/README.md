@@ -37,3 +37,12 @@ expects a JSON object describing each column with a semantic `type` such as
   }
 ]
 ```
+
+## Environment variables
+
+Create a `.env` file based on `.env.example` and adjust `PORT` as needed.
+Start the service with:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT --env-file .env
+```

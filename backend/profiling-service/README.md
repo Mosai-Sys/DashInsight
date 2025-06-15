@@ -21,3 +21,12 @@ Response example:
   }
 }
 ```
+
+## Environment variables
+
+Copy `.env.example` to `.env` and set `PORT` if you need a custom port.
+Run the service with:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT --env-file .env
+```

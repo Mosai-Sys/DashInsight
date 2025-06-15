@@ -25,6 +25,15 @@ npm start
 
 The gateway will start on port `8000` by default.
 
+## Environment variables
+
+Copy `.env.example` to `.env` and set `PORT` if you need a different port.
+Start the gateway with:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT --env-file .env
+```
+
 ## Federated services
 
 - `http://auth-service:8000/graphql`
