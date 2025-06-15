@@ -42,8 +42,11 @@ services:
   gateway:
     build:
       context: ./backend/gateway
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    environment:
+      JWT_SECRET: supersecretkey
     depends_on:
       - auth-service
       - profiling-service
