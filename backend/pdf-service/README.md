@@ -16,6 +16,11 @@ npm start
 
 The service listens on port `8000` by default (change with the `PORT` environment variable).
 
+## Environment variables
+
+Create a `.env` file from `.env.example` and set `PORT` as needed.
+When launching with `uvicorn` use `--env-file .env`.
+
 ## Endpoint
 
 `POST /generate-pdf`

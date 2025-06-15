@@ -43,3 +43,12 @@ The request payload must contain the current staffing situation and budget targe
   3. Special education FTE must cover at least `0.25` FTE per student with vedtak.
 
 The service solves the LP and returns only the positions whose FTE changed along with the resulting cost.
+
+## Environment variables
+
+Create a `.env` file from `.env.example` and set `PORT` to control the port.
+Run the service with:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT --env-file .env
+```
