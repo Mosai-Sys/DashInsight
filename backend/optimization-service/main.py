@@ -5,6 +5,11 @@ import pulp
 
 app = FastAPI()
 
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
 TEACHER_STUDENT_RATIO = 1 / 18  # minimum teachers per student
 SPECIAL_ED_RATIO = 0.25  # FTE per special education student
 

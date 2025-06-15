@@ -4,6 +4,11 @@ from typing import List
 
 app = FastAPI()
 
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
 LAERERNORM = 1 / 16  # minimum teacher FTE per student
 
 class Position(BaseModel):
