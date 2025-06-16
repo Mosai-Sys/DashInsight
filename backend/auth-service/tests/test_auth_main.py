@@ -33,6 +33,19 @@ def test_login_wrong_password():
     assert resp.status_code == 401
 
 
+def test_login_missing_secret():
+    if "JWT_SECRET" in os.environ:
+        del os.environ["JWT_SECRET"]
+    resp = client.post("/login", json={"username": "user", "password": "pass"})
+    assert resp.status_code == 500
+
+
+def test_login_missing_username():
+    os.environ["JWT_SECRET"] = "secret"
+    resp = client.post("/login", json={"username": "", "password": "pass"})
+    assert resp.status_code == 401
+
+
 def test_me_requires_token():
     os.environ["JWT_SECRET"] = "secret"
     resp = client.get("/me")

@@ -9,9 +9,11 @@ app = FastAPI()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# In-memory users; in production use a database
+# In-memory users; for real deployments use a proper database
+DEFAULT_USER = os.getenv("DEFAULT_USER", "user")
+DEFAULT_PASS = os.getenv("DEFAULT_PASS", "pass")
 USERS = {
-    "user": pwd_context.hash("pass"),
+    DEFAULT_USER: pwd_context.hash(DEFAULT_PASS),
 }
 
 class LoginInput(BaseModel):
@@ -24,7 +26,9 @@ def health():
 
 @app.post("/login")
 def login(data: LoginInput):
-    secret = os.getenv("JWT_SECRET", "secret")
+    secret = os.getenv("JWT_SECRET")
+    if not secret:
+        raise HTTPException(status_code=500, detail="JWT secret not configured")
     hashed = USERS.get(data.username)
     if not hashed or not pwd_context.verify(data.password, hashed):
         raise HTTPException(status_code=401, detail="Invalid credentials")

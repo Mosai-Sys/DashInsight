@@ -56,3 +56,21 @@ def test_optimize_infeasible():
     }
     resp = client.post('/optimize', json=payload, headers=_auth_header())
     assert resp.status_code == 400
+
+
+def test_optimize_reduces_cost():
+    payload = {
+        'school_id': '1',
+        'budget': 800000,
+        'students': 180,
+        'positions': [
+            {'type': 'teacher', 'fte': 12, 'cost': 50000},
+            {'type': 'special_ed', 'fte': 2, 'cost': 55000}
+        ],
+        'special_ed_students': 4
+    }
+    resp = client.post('/optimize', json=payload, headers=_auth_header())
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data['total_cost'] < 800000
+    assert any(rec['type'] == 'teacher' for rec in data['recommendations'])
