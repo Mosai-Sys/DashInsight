@@ -4,7 +4,7 @@ import { gql, useMutation } from '@apollo/client';
 import useIndexedDB from '../hooks/useIndexedDB';
 import { Snackbar, Alert } from '@mui/material';
 
-env.allowLocalModels = false;
+env.allowLocalModels = true;
 const model_id = 'Xenova/phi-3-mini-4k-instruct-onnx';
 
 const GENERATE_REPORT = gql`
