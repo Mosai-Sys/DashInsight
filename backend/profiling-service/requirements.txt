@@ -3,3 +3,10 @@ uvicorn[standard]==0.29.*
 pandas==2.2.*
 openpyxl==3.1.*
 PyJWT==2.8.*
+structlog==23.2.*
+prometheus-fastapi-instrumentator==6.1.*
+opentelemetry-distro==0.43b0
+opentelemetry-instrumentation-fastapi==0.43b0
+opentelemetry-instrumentation-httpx==0.43b0
+opentelemetry-exporter-jaeger==1.21.*
+deprecated==1.*

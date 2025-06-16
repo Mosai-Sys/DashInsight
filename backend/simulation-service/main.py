@@ -3,8 +3,10 @@ from pydantic import BaseModel
 from typing import List
 from backend.shared.models import Position, StaffingInput, PositionType, Recommendation
 from backend.shared.security import get_current_user
+from backend.shared.observability import setup_observability
 
 app = FastAPI()
+log = setup_observability(app, "simulation-service")
 
 LAERERNORM = 1 / 16  # minimum teacher FTE per student
 
@@ -24,10 +26,12 @@ def _total_cost(positions: List[Position]) -> float:
 
 @app.get("/health")
 def health():
+    log.info("healthcheck")
     return {"status": "ok"}
 
 @app.post("/simulate", response_model=SimulationResult)
 def simulate(data: StaffingInput, user: str = Depends(get_current_user)) -> SimulationResult:
+    log.info("simulate_start", school_id=data.school_id)
     violations: List[Violation] = []
 
     teacher_fte = _sum_fte(data.positions, PositionType.TEACHER)
@@ -47,4 +51,5 @@ def simulate(data: StaffingInput, user: str = Depends(get_current_user)) -> Simu
         violations.append(Violation(type="soft", message=f"Budget exceeded by {diff} NOK"))
 
     valid = not any(v.type == "hard" for v in violations)
+    log.info("simulate_complete", valid=valid)
     return SimulationResult(valid=valid, violations=violations)
