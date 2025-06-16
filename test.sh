@@ -32,6 +32,13 @@ sleep 5
 kill $VITE_PID
 cd ..
 
+# install python dependencies for tests
+for req in backend/*/requirements.txt; do
+  pip install -r "$req" >/dev/null
+done
+pip install httpx >/dev/null
+pip install python-multipart >/dev/null
+
 pytest backend
 
 echo "All tests completed"

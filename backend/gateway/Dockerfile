@@ -1,12 +1,12 @@
-FROM node:18
+FROM node:18 AS builder
 WORKDIR /app
-
-# install dependencies first to leverage Docker cache
+ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm install --production
-
-# copy source
 COPY . .
 
-# run the Node gateway
+FROM node:18-slim
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app /app
 CMD ["node", "index.js"]
