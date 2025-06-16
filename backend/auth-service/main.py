@@ -4,8 +4,10 @@ import os
 import jwt
 from passlib.context import CryptContext
 from backend.shared.security import get_current_user
+from backend.shared.observability import setup_observability
 
 app = FastAPI()
+log = setup_observability(app, "auth-service")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -22,6 +24,7 @@ class LoginInput(BaseModel):
 
 @app.get("/health")
 def health():
+    log.info("healthcheck")
     return {"status": "ok"}
 
 @app.post("/login")
@@ -33,8 +36,10 @@ def login(data: LoginInput):
     if not hashed or not pwd_context.verify(data.password, hashed):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = jwt.encode({"user": data.username}, secret, algorithm="HS256")
+    log.info("login_success", user=data.username)
     return {"token": token}
 
 @app.get("/me")
 def me(user: str = Depends(get_current_user)):
+    log.info("current_user", user=user)
     return {"user": user}

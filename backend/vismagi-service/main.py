@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
+from backend.shared.observability import setup_observability
 
 app = FastAPI()
+log = setup_observability(app, "vismagi-service")
 
 
 @app.get("/health")
 async def health():
+    log.info("healthcheck")
     return {"status": "ok"}
 
 
@@ -37,6 +40,7 @@ async def recommend(meta: DatasetMeta) -> List[ChartConfig]:
     temporals = [c for c in columns if c.type in {"temporal", "datetime"}]
     geos = [c for c in columns if c.type == "geo"]
 
+    log.info("recommend", columns=len(columns))
     charts: List[ChartConfig] = []
 
     if temporals and numerics:
