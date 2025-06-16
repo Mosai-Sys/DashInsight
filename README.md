@@ -57,3 +57,21 @@ npm install
 npm run dev
 ```
 
+
+## First time run
+
+1. Copy `.env.example` to `.env` and adjust any secrets.
+2. Build and start all services:
+   ```bash
+   docker-compose up --build
+   ```
+3. In another terminal start the frontend:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+4. Verify services:
+   ```bash
+   ./test.sh
+   ```
