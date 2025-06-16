@@ -5,6 +5,10 @@ const { chromium } = require('playwright');
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 app.post('/generate-pdf', async (req, res) => {
   const { html } = req.body || {};
   if (!html) {
@@ -19,11 +23,8 @@ app.post('/generate-pdf', async (req, res) => {
     const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
     await browser.close();
 
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Length': pdfBuffer.length
-    });
-    return res.send(pdfBuffer);
+    const base64 = pdfBuffer.toString('base64');
+    return res.json({ pdf: base64 });
   } catch (err) {
     if (browser) {
       await browser.close();

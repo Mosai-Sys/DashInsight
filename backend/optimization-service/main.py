@@ -54,14 +54,20 @@ def optimize(data: OptimizationInput):
     prob += data.budget - total_cost <= deviation
 
     # Teacher/student ratio constraint
-    teacher_var = fte_vars.get("L\u00e6rer") or fte_vars.get("Lærer") or fte_vars.get("teacher")
+    teacher_var = fte_vars.get("Lærer")
+    if teacher_var is None:
+        teacher_var = fte_vars.get("Laerer")
+    if teacher_var is None:
+        teacher_var = fte_vars.get("teacher")
     if teacher_var is not None:
         prob += teacher_var >= TEACHER_STUDENT_RATIO * data.students
     else:
         raise HTTPException(status_code=400, detail="Teacher position missing")
 
     # Special education staffing constraint
-    sp_var = fte_vars.get("Spesialpedagog") or fte_vars.get("special_ed")
+    sp_var = fte_vars.get("Spesialpedagog")
+    if sp_var is None:
+        sp_var = fte_vars.get("special_ed")
     if sp_var is not None:
         prob += sp_var >= SPECIAL_ED_RATIO * data.special_ed_students
     else:
