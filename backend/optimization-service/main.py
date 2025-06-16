@@ -1,14 +1,15 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List, Dict
+import os
 import pulp
 from backend.shared.models import Position, StaffingInput, Recommendation, PositionType
 from backend.shared.security import get_current_user
 
 app = FastAPI()
 
-TEACHER_STUDENT_RATIO = 1 / 18  # minimum teachers per student
-SPECIAL_ED_RATIO = 0.25  # FTE per special education student
+TEACHER_STUDENT_RATIO = float(os.getenv("TEACHER_STUDENT_RATIO", 1 / 18))
+SPECIAL_ED_RATIO = float(os.getenv("SPECIAL_ED_RATIO", 0.25))
 
 class OptimizationOutput(BaseModel):
     recommendations: List[Recommendation]
@@ -28,11 +29,9 @@ def optimize(data: StaffingInput, user: str = Depends(get_current_user)):
     }
 
     total_cost = pulp.lpSum([fte_vars[p.type] * p.cost for p in data.positions])
-    deviation = pulp.LpVariable("deviation", lowBound=0)
 
-    prob += deviation
+    prob += total_cost
     prob += total_cost <= data.budget
-    prob += data.budget - total_cost <= deviation
 
     teacher_var = fte_vars.get(PositionType.TEACHER)
     if teacher_var is not None:
