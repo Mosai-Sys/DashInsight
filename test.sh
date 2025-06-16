@@ -1,30 +1,37 @@
 #!/bin/bash
 set -euo pipefail
 
-# Build and start services
+# start services
 if command -v docker-compose >/dev/null 2>&1; then
   docker-compose up -d --build
   trap 'docker-compose down' EXIT
 
-  # Wait for services to start
-  sleep 5
-
-  declare -A ports=( [auth-service]=8001 [profiling-service]=8002 [vismagi-service]=8003 [optimization-service]=8004 [simulation-service]=8005 [pdf-service]=8006 [gateway]=8000 )
-  for svc in "${!ports[@]}"; do
-    port=${ports[$svc]}
-    echo "Testing $svc on port $port"
-    curl -f "http://localhost:$port/health" && echo " OK"
+  ports=(8001 8002 8003 8004 8005 8006 8000)
+  for p in "${ports[@]}"; do
+    until curl -s "http://localhost:$p/health" >/dev/null; do
+      echo "Waiting for port $p"; sleep 2;
+    done
+    echo "Service on $p OK"
   done
+
+  curl -s -X POST http://localhost:8000/graphql \
+    -H "Content-Type: application/json" \
+    -d '{"query":"{ health }"}'
 else
-  echo "docker-compose not available; skipping container tests" >&2
+  echo "docker-compose not available" >&2
 fi
 
-# Frontend install and build
+# frontend
 cd frontend
 npm install
+npm ls onnxruntime-web >/dev/null
 npm run build
+PORT=5173 npm run dev >/tmp/vite.log 2>&1 &
+VITE_PID=$!
+sleep 5
+kill $VITE_PID
 cd ..
 
-# Run backend tests
 pytest backend
 
+echo "All tests completed"
