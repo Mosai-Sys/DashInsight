@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install root scripts
+        run: sudo apt-get update && sudo apt-get install -y lsof
+      - name: Run test script
+        run: bash test.sh
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build

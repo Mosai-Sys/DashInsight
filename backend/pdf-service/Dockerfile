@@ -1,12 +1,12 @@
-FROM node:18
-
+FROM node:18 AS builder
 WORKDIR /app
-
-# Install Node dependencies
-COPY package.json ./
+ENV NODE_ENV=production
+COPY package*.json ./
 RUN npm install && npx playwright install --with-deps
-
 COPY . .
 
-# Run the service
+FROM node:18-slim
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app /app
 CMD ["node", "index.js"]

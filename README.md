@@ -1,3 +1,5 @@
+![CI](https://github.com/example/repo/actions/workflows/ci.yml/badge.svg)
+
 # README.md
 
 [Instruksjoner for utviklere og testere]
