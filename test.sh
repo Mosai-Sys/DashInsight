@@ -29,7 +29,7 @@ npm run build
 PORT=5173 npm run dev >/tmp/vite.log 2>&1 &
 VITE_PID=$!
 sleep 5
-kill $VITE_PID
+kill $VITE_PID || true
 cd ..
 
 # install python dependencies for tests
