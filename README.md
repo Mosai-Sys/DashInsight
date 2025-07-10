@@ -1,4 +1,4 @@
-![CI](https://github.com/example/repo/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Mosai-Sys/DashInsight/actions/workflows/ci.yml/badge.svg)
 
 # README.md
 
@@ -23,9 +23,7 @@ Ensure the GraphQL gateway and pdf-service are running so the `generateReport` m
 
 ## Dashboard
 
-The main dashboard fetches data from the GraphQL API and shows KPIs and recommended charts. Below is a placeholder for a future screenshot.
-
-![Dashboard screenshot](docs/dashboard-screenshot.png)
+The main dashboard fetches data from the GraphQL API and shows KPIs and recommended charts.
 
 Additional preview:
 
@@ -75,5 +73,9 @@ npm run dev
    ```
 4. Verify services:
    ```bash
-   ./test.sh
+  ./test.sh
    ```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
