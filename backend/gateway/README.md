@@ -28,10 +28,10 @@ The gateway will start on port `8000` by default.
 ## Environment variables
 
 Copy `.env.example` to `.env` and set `PORT` if you need a different port.
-Start the gateway with:
+Run the gateway with Node:
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port $PORT --env-file .env
+npm start
 ```
 
 ## Federated services
