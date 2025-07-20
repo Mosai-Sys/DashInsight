@@ -19,7 +19,9 @@ jobs:
       - name: Install root scripts
         run: sudo apt-get update && sudo apt-get install -y lsof
       - name: Run test script
-        run: bash test.sh
+        run: |
+          export JWT_SECRET=testsecret
+          bash test.sh
       - name: Build frontend
         run: |
           cd frontend
