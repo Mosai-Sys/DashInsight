@@ -1,0 +1,26 @@
+{
+  "dashboard": {
+    "dashboard": "Dashbord",
+    "title": "{{schoolName}}-dashbord",
+    "compareLink": "Sammenlign skoler",
+    "selectPrompt": "Velg en skole for \u00e5 vise data.",
+    "errorLoading": "Feil ved lasting av data",
+    "openAI": "\u00c5pne AI-analyse",
+    "closeAI": "Lukk AI-analyse",
+    "loaded": "Lastet {{schoolName}}",
+    "dataLoaded": "Data lastet"
+  },
+  "compare": {
+    "title": "Sammenlign skoler",
+    "backLink": "Tilbake til dashbord",
+    "selectPrompt": "Velg 2\u20134 skoler for \u00e5 sammenligne.",
+    "errorLoading": "Feil ved lasting av sammenligning",
+    "restored": "Gjenopprettet sammenligningsvalg",
+    "saved": "Lagret sammenligningsvalg"
+  },
+  "schoolSelector": {
+    "label": "Skole",
+    "restored": "Gjenopprettet valgt skole",
+    "saved": "Lagret valgt skole"
+  }
+}

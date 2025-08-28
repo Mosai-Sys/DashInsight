@@ -10,6 +10,7 @@ import {
   Alert,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import MultiSchoolSelector from '../components/MultiSchoolSelector';
 import KPIComparisonTable from '../components/KPIComparisonTable';
 import { KPISchool } from '../components/KPIComparisonTable';
@@ -34,6 +35,7 @@ export default function CompareView() {
   const [restored, setRestored] = useState(false);
   const [saved, setSaved] = useState(false);
   const initial = useRef(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (initial.current) {
@@ -54,19 +56,19 @@ export default function CompareView() {
   return (
     <Container sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h4">Compare Schools</Typography>
+        <Typography variant="h4">{t('compare.title')}</Typography>
         <MuiLink component={Link} to="/" underline="hover">
-          Back to Dashboard
+          {t('compare.backLink')}
         </MuiLink>
       </Box>
       <MultiSchoolSelector selectedIds={selectedIds} onChange={setSelectedIds} />
       {selectedIds.length < 2 && (
-        <Typography sx={{ mt: 2 }}>Select 2–4 schools to compare.</Typography>
+        <Typography sx={{ mt: 2 }}>{t('compare.selectPrompt')}</Typography>
       )}
       {loading && <CircularProgress sx={{ mt: 2 }} />}
       {error && (
         <Typography color="error" sx={{ mt: 2 }}>
-          Error loading comparison
+          {t('compare.errorLoading')}
         </Typography>
       )}
       {schools.length > 0 && !loading && (
@@ -79,7 +81,7 @@ export default function CompareView() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert severity="info" sx={{ width: '100%' }}>
-          Restored compare selection
+          {t('compare.restored')}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -89,7 +91,7 @@ export default function CompareView() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert severity="success" sx={{ width: '100%' }}>
-          Saved compare selection
+          {t('compare.saved')}
         </Alert>
       </Snackbar>
     </Container>

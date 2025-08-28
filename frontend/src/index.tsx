@@ -8,6 +8,7 @@ import client from './apollo/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { registerSW } from 'virtual:pwa-register';
 import { ThemeProvider } from './hooks/useTheme';
+import './i18n';
 import './index.css';
 
 registerSW({ immediate: true });

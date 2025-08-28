@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import useTenantStore from '../state/tenant';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { useTranslation } from 'react-i18next';
 
 const ALL_SCHOOLS = gql`
   query AllSchools {
@@ -29,6 +30,7 @@ export default function SchoolSelector() {
   const [restored, setRestored] = useState(false);
   const [saved, setSaved] = useState(false);
   const initial = useRef(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!selectedSchoolId && storedId) {
@@ -57,11 +59,11 @@ export default function SchoolSelector() {
   return (
     <>
       <FormControl size="small" sx={{ minWidth: 200 }}>
-        <InputLabel id="school-select-label">School</InputLabel>
+        <InputLabel id="school-select-label">{t('schoolSelector.label')}</InputLabel>
         <Select
           labelId="school-select-label"
           value={selectedSchoolId || ''}
-          label="School"
+          label={t('schoolSelector.label')}
           onChange={handleChange}
         >
           {data.allSchools.map((school: { id: string; name: string }) => (
@@ -78,7 +80,7 @@ export default function SchoolSelector() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert severity="info" sx={{ width: '100%' }}>
-          Restored selected school
+          {t('schoolSelector.restored')}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -88,7 +90,7 @@ export default function SchoolSelector() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert severity="success" sx={{ width: '100%' }}>
-          Saved selected school
+          {t('schoolSelector.saved')}
         </Alert>
       </Snackbar>
     </>

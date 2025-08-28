@@ -1,0 +1,26 @@
+{
+  "dashboard": {
+    "dashboard": "Dashboard",
+    "title": "{{schoolName}} Dashboard",
+    "compareLink": "Compare schools",
+    "selectPrompt": "Select a school to view data.",
+    "errorLoading": "Error loading data",
+    "openAI": "Open AI Analysis",
+    "closeAI": "Close AI Analysis",
+    "loaded": "Loaded {{schoolName}}",
+    "dataLoaded": "Data loaded"
+  },
+  "compare": {
+    "title": "Compare Schools",
+    "backLink": "Back to Dashboard",
+    "selectPrompt": "Select 2\u20134 schools to compare.",
+    "errorLoading": "Error loading comparison",
+    "restored": "Restored compare selection",
+    "saved": "Saved compare selection"
+  },
+  "schoolSelector": {
+    "label": "School",
+    "restored": "Restored selected school",
+    "saved": "Saved selected school"
+  }
+}
