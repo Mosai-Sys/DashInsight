@@ -18,6 +18,7 @@ const typeDefs = `#graphql
 
   type Query {
     health: String!
+    allSchools: [School!]!
     school(id: ID!): School
     compareSchools(ids: [ID!]!): [School!]!
   }
@@ -70,6 +71,7 @@ const schools = [
 const resolvers = {
   Query: {
     health: () => 'ok',
+    allSchools: () => schools,
     school: (_, { id }) => schools.find((s) => s.id === id) || null,
     compareSchools: (_, { ids }) => schools.filter((s) => ids.includes(s.id)),
   },
