@@ -9,6 +9,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { registerSW } from 'virtual:pwa-register';
 import { ThemeProvider } from './hooks/useTheme';
 import './index.css';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 
 registerSW({ immediate: true });
 
@@ -18,15 +20,17 @@ if (rootEl) {
   root.render(
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <ThemeProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<App />} />
-              <Route path="/compare" element={<CompareView />} />
-              <Route path="/orbital" element={<OrbitalDashboardUI />} />
-            </Routes>
-          </BrowserRouter>
-        </ThemeProvider>
+        <I18nextProvider i18n={i18n}>
+          <ThemeProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<App />} />
+                <Route path="/compare" element={<CompareView />} />
+                <Route path="/orbital" element={<OrbitalDashboardUI />} />
+              </Routes>
+            </BrowserRouter>
+          </ThemeProvider>
+        </I18nextProvider>
       </ApolloProvider>
     </React.StrictMode>
   );
